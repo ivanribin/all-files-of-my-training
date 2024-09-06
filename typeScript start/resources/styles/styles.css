@@ -1,0 +1,29 @@
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+}
+
+.icon {
+    width: 400px;
+    transition: transform 2s, border 0.5s;
+    border-radius: 40px;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    color: rgb(104, 104, 160);
+    border: 6px solid black;
+}
+
+.icon.click {
+    border: 20px solid black;
+}
+
+body {
+    transition: 2s;
+    color: rgb(188, 153, 29);
+}
+
