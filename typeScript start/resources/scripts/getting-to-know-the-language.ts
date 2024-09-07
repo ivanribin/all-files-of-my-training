@@ -298,5 +298,619 @@ let user: { name: string, age: number } = {
     age: 30,
 };
 
+// Try to change property
+let user: { name: strinq, age: number } ={
+    name: "Yauhen",
+    /*
+        Error:
+        The expected type comes from property "age"
+        which is declared here on type "{ name: string, age: number;}"
+    */
+   age: "test",          // <---- Must be a number
+};
+
+// Try to chenge variable type
+user = "test";  // Type "test" is not  assignable to type "{ name: strinq, age: number }"
 
 
+// Additional property
+let user: { name: string, age: number } = {
+    name: "Yauneh",
+    age: 30,
+    /*
+        Error:
+        Object literal may only specify known properties,
+        and "nickName" does not exist in type "{ name: string, age: number}"
+    */
+    nickName: "webDev",
+};
+
+
+// Dynamically try to add "nickName" property for User object
+/*
+    Error:
+    Property "nickName" does not exist on type "{ name: strinf, age: number }"
+*/
+user.nickName = "webDev";
+
+
+
+
+// Updating object type
+let user: { name: string, age: number , nickName: string } = {
+    name: "Yauneh",
+    age: 30,
+    nickName: "webDev",
+};
+
+
+
+// New admin object
+let admin: { name: string, age: number, nickName: string } = {
+    name: "Max",
+    age: 20,
+    nickName: "Mad",
+};
+
+
+
+// 2 objcet with the same types
+let user: { name: string, age: number , nickName: string } = {
+    name: "Yauneh",
+    age: 30,
+    nickName: "webDev",
+};
+
+let admin: { name: string, age: number, nickName: string } = {
+    name: "Max",
+    age: 20,
+    nickName: "Mad",
+};
+
+//мы повторяем код что неэффективно
+
+
+
+
+//Using Type for objects structure
+type Person = { name: string, age: nimber, nickName: string };
+
+//Apply Person type for objects with the same structure
+let user: Person = {
+    name: "Yauhen",
+    age: 30,
+    nickName: "webDev",
+};
+
+let admin: Person = {
+    name: "Max",
+    age: 20,
+    nickName: "Mad",
+}
+
+
+
+// 2 objects with alomst the same structure
+let user: Person = {
+    name: "Yauhen",
+    age: 30,
+    nickName: "webDev",      //<---- property
+};
+
+let admin: Person = {
+    name: "Max",
+    age: 20,
+    getPass(): string {      //<----- new method
+        return `${this.name}${this.age}`;
+    },
+}
+
+//Updating type with optional properties
+type Person = {
+    name: string,
+    age: number,
+    nickName?: string,
+    getPass?: () => string,
+};
+
+
+
+
+// CLASSES
+
+//Simple class example
+class User {
+
+}
+
+//Class types, including constructor
+class User {
+    name: string;
+    age: number;
+    nickName: string;
+
+    constructor(name: string, age: number, nickName: string) {
+        this.name = name;
+        this.age = age;
+        this.nickName = nickName;
+    }
+}
+
+const yauhen = new User("Yauhen", 31, "webDev");
+
+yauhen; // { name: "Yauhen", age: 31, nickName: "webDev"}
+
+
+
+
+//Class types modificators
+class User {
+
+    public name: string;
+    private nickName: string;
+    protected age: number;
+    readonly pass: number;
+
+    constructor(name: string, age: number, nickName: string, pass: number) {
+        this.name = name;
+        this.age = age;
+        this.nickName = nickName;
+        this.pass = pass;
+    }
+}
+
+/*
+    Public: значение по умолчанию. к этому св-ву можно получить свободный доступ
+    Private: предмет в нем не может быть доступен вне класса, наследники тоже не смогут
+    Protected: доступ могут получить только наследники
+    Readonly: элемент доступен только для чтения
+*/
+
+const yauhen = new User("Yauhen", 31, "webDev", 123);
+
+yauhen.name;           // "Yauhen"
+yauhen.nickName;       //Prop "nickName" is private and only accesible within class "user"
+yauhen.age;            //Prop "age" is protected and only accesible within class "user" and its subclasses
+yauhen.pass = 42;      //Cannot assign to "pass" because it is a read-only property
+
+
+
+
+// Class default properties
+class User {
+
+    name: string;
+    nickName: string = "webDev";
+    age: number = 20;
+
+    constructor(name: string, age: number, nickName: string) {
+        this.name = name;
+    }
+}
+
+const user = new User("Yauhen");
+
+user; // {name: "Yauhen", age: 20, nickName: "webDev"}
+
+
+
+// Class creation example
+class User {
+
+    public name: string;
+    public nickName: string;
+    public age: number;
+    public pass: number;
+
+    constructor(name: string, age: number, nickName: string, pass: number) {
+        this.name = name;
+        this.age = age;
+        this.nickName = nickName;
+        this.pass = pass;
+    }
+}
+//Слишком громоздко
+//Minimalization of Class properties
+class User {
+
+    constructor(
+        public name: string,
+        public age: number,
+        public nickName: string,
+        public pass: number
+    ) {}
+}
+//Все типы обяьвляются в конструктуре и автоматически происходит присвоение. Метод обращения нужно указывать обязательно в таких случаях
+
+
+//Try to change private property
+class User {
+    private age: number = 20;
+
+    constructor(public name: string) {}
+}
+
+const yauhen = new User("Yauhen");
+
+yauhen.age = 30;   // Property "age" is private and only accessible within class "User"
+
+// get access to private property
+class User {
+    private age: number = 20;
+    constructor(public name:string) {}
+
+    setAge(age: number) {
+        this.age = age;
+    }
+
+    set myAge(age:number) {
+        this.age = age;
+    }
+}
+
+
+const yauhen = new User("Yauhen");
+
+yauhen.setAge(30); // 30
+yauhen.myAge = 31; // 31
+
+
+
+//INHERITANCE (НАСЛЕДВОАНИЕ)
+
+//Simple Class example
+class User {
+
+    constructor(public name: string, public age: number) {}
+}
+
+//Class with static property
+class User {
+    
+    static secret = 12345; // static property
+
+    constructor(public name: string, public age: number) {}
+}
+
+
+// Example of call static property
+User.secret
+
+// Call static property in class method
+class User {
+
+    static secret = 12345;
+
+    constructor(public name: string, public age: number) {}
+
+    getPass(): string {
+        return `${this.name}${User.secret}`;
+    }
+}
+
+const yauhen = new User("Yauhen", 30);
+
+yauhen.getPass(); // "Yauhen12345"
+
+
+
+
+// Class example
+class User {
+
+    private nickName: string = "webDev";
+    static secret = 12345;
+
+    constructor(public name: string, public age: number) {}
+
+    getPass(): string {
+        return `${this.name}${User.secret}`;
+    }
+
+}
+
+// Inheritance example
+class Yauhen extends User {
+
+    name: string = "Yauhen";
+
+}
+
+// Create instances based on "User" and "Yauhen" classes
+const max = new User("Max", 20);
+const yauhen = new Yauhen(31); // Expected 2 arguments, but got 1
+
+// Realization of constructor in the inherited class
+class Yauhen extends User {
+
+    name: string = "Yauhen";
+
+    constructor(age: number) {
+        super(name,age);
+    }
+
+}
+
+// No Error
+// Create instances based on "User" and "Yauhen" classes
+const max = new User("Max", 20);
+const yauhen = new Yauhen(31);
+
+// Personal method in inherited class
+class Yauhen extends User {
+
+    name: string = "Yauhen";
+
+    constructor(age: number) {
+        super(name,age);
+    }
+
+    getPass(): string {
+        return `${this.age}${this.name}${User.secret}`;
+    }
+
+}
+
+
+
+
+// Abstract class example
+abstract class User {
+
+
+    constructor(public name: string, public age: number) {}
+
+    greet(): void {
+        console.log(this.name);
+    }
+
+    abstract getPass(): string;
+}
+
+const max = new User("Max", 20); // Cannot create an instance of an abstract class
+
+
+
+// Create class using Abstarction
+/*
+    Error:
+    Non-abstract class "Yauhen" does not implement
+    inherited abstarct member "getPass" from class "User"
+*/
+class Yauhen extends User {
+    name: string = "Yauhen";
+
+    constructor(age: number) {
+        super(name,age);
+    }
+}
+
+
+
+// Realization of "getPass" method
+class Yauhen extends User {
+
+    name: string = "Yauhen";
+
+    constructor(age:number) {
+        super(name,age);
+    }
+
+    getPass(): string {
+        return `${this.age}${this.name}`;
+    }
+
+}
+
+// Call prototype method
+yauhen.greet();   // "Yauhen"
+// Call personal method
+yauhen.getPass(); // "31Yauhen"
+
+
+
+
+
+// NAMESPACES & MODULES (ПРОСТРАНСТВО ИМЕН И МОДУЛИ)
+
+// Define namespace
+namespace Utils {
+
+    export const SECRET: string = "123321"; // Export data from Namespace
+    const PI: number = 3.14;
+
+    export const getPass = (name: string, age: number): string => `${name}${age}`;
+
+    export const isEmpty = <T>(data: T): boolean => !data;
+
+};
+
+// Calling exported from namespace methods
+const myPass = Utils.getPass("Yauhen", 31);   // "Yauhen31"
+const isSecret = Utils.isEmpty(Utils.SECRET); // "false"
+
+// Constant with the same name outsode namespace
+const PI = 3;                                 // No Errors
+
+// File "Utils.ts"
+
+// Export
+namespace Utils {
+
+    export const SECRET: string = "123321";
+
+    export const getPass = (name: string, age: number): string => `${name}${age}`;
+
+};
+
+
+// File "Customers.ts"
+// Import
+/// <reference path="Utils.ts" />                 // <--- Import
+
+// Calling "Utils" namespace method
+const myPass = Utils.getPass("Yauhen", 31); // "Yauhen31"
+
+
+// Import/Export (ES6 Modules)
+
+// File "Utils.ts"
+export const SECRET: string = "123321";
+
+export const getPass = (name:string, age: number): string => `${name}${age}`;
+
+
+//File "Customers.ts"
+import { getPass, SECRET } from "./Utils";
+
+const myPass = getPass(SECRET, 31);
+
+
+
+
+
+// TYPE INTERFACE (ИНТЕРФЕЙСЫ)
+
+// Simple interface example
+interface User {
+    name: string,
+    age: number,
+}
+
+
+
+// Interface & Type
+interface User {
+    name: string,
+    age: number,
+}
+
+type User {
+    name: string,
+    age: number,
+}
+
+// Create object based on Interface
+interface User {
+    name: string,
+    age: number,
+}
+
+const yauhen: User = {
+    name: "Yauhen",
+    age: 31,
+}
+
+
+
+// Interface "readonly" modifier
+interface User {
+    readonly name: string, // <--- Cant be changed
+    age: number,
+}
+
+const yauhen: User = {
+    name: "Yauhen",
+    age: 31,
+}
+
+yauhen.age = 30;
+yauhen.name = "Max"; // Cannot assign to "name" because it is a read-only property
+
+
+
+// Compare interface type and object
+interface User {
+    name: string,
+    age: number,
+}
+
+const yauhen: User = {
+    name: "yauhen",
+    age: 31,
+    /*
+    Error:
+    Object literal may only specify known properties, and "nickName" does not exist in type "User"
+    */
+   nickName: "webDev",  // <--- didnt describe
+}
+
+
+
+// Interface extension
+interface User {
+    name: string,
+    age: number,
+    [propName: string]: any;
+}
+
+const yauhen: User = {
+    name: "yauhen",
+    age: 31,
+    nickName: "webDev",
+    justTest: "test",
+}
+
+
+
+// Class Interface
+interface User {
+    name: string,
+    age: number,
+    getPass(): string,
+}
+
+//Class creation based on interface "User"
+class Yauhen implements User {
+    name: string = "Yauhen";
+    age: number = 31;
+    nickName: string = "webDev"; // <--- Not in interface
+    
+    getPass() {
+        return `${this.name}${this.age}`;
+    } 
+}
+
+
+
+// Cretae Class based omn multiple interfaces
+interface User {
+    name: string,
+    age: number,
+}
+
+// Separate interface with one method
+interface Pass {
+    getPass(): string,
+}
+
+class Yauhen implemets User, Pass {
+    name: string = "Yauhen";
+    age: number = 31;
+
+    getPass() {
+        return `${this.name}${this.age}`;
+    }
+}
+
+
+
+// Interface extends
+interface User {
+    name: string,
+    age: number,
+}
+
+// Interface extends
+interface Admin extends User {
+    getPass(): string,
+}
+
+class Yauhen implements Admin {
+    name: string = "Yauhen";
+    age: number = 31;
+
+    getPass() {
+        return `${this.name}${this.age}`;
+    }
+}
